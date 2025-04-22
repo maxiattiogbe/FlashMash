@@ -1,1 +1,1 @@
-# flashmash
+# FlashMash

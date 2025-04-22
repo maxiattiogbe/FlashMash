@@ -1,3 +1,3 @@
-# <img src="public/logo.png" alt="FlashMash Logo]" width="30"/> FlashMash 
+# <img src="public/logo.png" alt="FlashMash Logo]" width="37"/> FlashMash 
 
 Fun with flashcards reimagined

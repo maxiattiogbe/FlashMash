@@ -8,10 +8,10 @@ const GenerateFlashcardsPage = () => {
                 title="Generate Flashcards"
                 description="Generate flashcards for your favorite topics"
                 icon={SquareAsterisk}
-                iconColor="text-blue-500"
-                bgColor="bg-blue-500/10"
+                iconColor="text-[#4169e1]"
+                bgColor="bg-[#4169e1]/10"
             />
-            <p className="text-sm text-muted-foreground px-4 lg:px-8">
+            <p className="text-md text-muted-foreground px-4 lg:px-8">
                 Coming soon!
             </p>
         </div>

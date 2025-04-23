@@ -4,6 +4,7 @@ import {
     Search,
     SquareAsterisk,
     ArrowRight,
+    Upload,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -15,6 +16,13 @@ const tools = [
         label: "Find Flashcards",
         icon: Search,
         href: "/find-flashcards",
+        color: "text-[#4169e1]",
+        bgColor: "bg-[#4169e1]/10"
+    },
+    {
+        label: "Import Flashcards",
+        icon: Upload,
+        href: "/import-flashcards",
         color: "text-[#4169e1]",
         bgColor: "bg-[#4169e1]/10"
     },
@@ -51,11 +59,11 @@ const DashboardPage = () => {
                             <div className={cn("p-2 w-fit rounded-md", tool.bgColor)}>
                                 <tool.icon className={cn("h-8 w-8", tool.color)} />
                             </div>
-                            <div className="font-semibold">
+                            <div className="font-semibold flex items-center gap-x-2">
                                 {tool.label}
+                                <ArrowRight className="h-5 w-5" />
                             </div>
                         </div>
-                        <ArrowRight className="h-5 w-5" />
                     </Card>
                 ))}
             </div>

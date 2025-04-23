@@ -11,6 +11,7 @@ import {
     Search, 
     Settings,
     SquareAsterisk,
+    Upload,
 } from "lucide-react";
 
 const montserrat = Montserrat({
@@ -29,6 +30,12 @@ const routes = [
         label: "Find Flashcards",
         icon: Search,
         href: "/find-flashcards",
+        color: "text-[#89CFF0]"
+    },
+    {
+        label: "Import Flashcards",
+        icon: Upload,
+        href: "/import-flashcards",
         color: "text-[#89CFF0]"
     },
     {

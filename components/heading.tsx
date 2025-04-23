@@ -15,7 +15,7 @@ export const Heading = ({ title, description, icon: Icon, iconColor, bgColor }: 
             <div className={cn("p-2 w-fit rounded-md", bgColor)}>
                 <Icon className={cn("h-10 w-10", iconColor)} />
             </div>
-            <div className="font-semibold">
+            <div className="text-lg font-semibold">
                 {title}
             </div>
             <p className="text-sm text-muted-foreground">

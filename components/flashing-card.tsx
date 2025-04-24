@@ -9,18 +9,29 @@ interface FlashingCardProps {
   revealed: boolean;
   onOptionChange: (option: string) => void;
   lockedOption: string;
+  flashSpeed: number;
 }
 
-const FlashingCard = ({ options, correct, isFlashing, revealed, onOptionChange, lockedOption }: FlashingCardProps) => {
+const FlashingCard = ({
+  options,
+  correct,
+  isFlashing,
+  revealed,
+  onOptionChange,
+  lockedOption,
+  flashSpeed,
+}: FlashingCardProps) => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     if (!isFlashing || revealed) return;
+
     const interval = setInterval(() => {
       setIndex((i) => (i + 1) % options.length);
-    }, 1000);
+    }, flashSpeed); // Use flashSpeed directly here
+
     return () => clearInterval(interval);
-  }, [isFlashing, revealed, options.length]);
+  }, [isFlashing, revealed, options.length, flashSpeed]); //  flashSpeed is a dependency now
 
   useEffect(() => {
     if (isFlashing) {
@@ -29,8 +40,8 @@ const FlashingCard = ({ options, correct, isFlashing, revealed, onOptionChange, 
   }, [index, isFlashing, onOptionChange, options]);
 
   const display = revealed
-  ? correct
-  : isFlashing
+    ? correct
+    : isFlashing
     ? options[index]
     : lockedOption;
 

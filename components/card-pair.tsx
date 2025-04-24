@@ -1,6 +1,6 @@
 "use client";
 
-import { useState} from "react";
+import { useEffect, useState } from "react";
 import FixedCard from "./fixed-card";
 import FlashingCard from "./flashing-card";
 import { Button } from "@/components/ui/button";
@@ -14,9 +14,36 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
   const [correctCount, setCorrectCount] = useState(0);
   const [startTime] = useState(Date.now());
   const [isComplete, setIsComplete] = useState(false);
-  const [answers, setAnswers] = useState<{word: string, answer: string, correct: boolean}[]>([]);
+  const [answers, setAnswers] = useState<{ word: string, answer: string, correct: boolean }[]>([]);
+  const [flashSpeed, setFlashSpeed] = useState(1000); // initial speed in ms
+  const [correctStreak, setCorrectStreak] = useState(0);
+  const [wrongStreak, setWrongStreak] = useState(0);
+  const [flashOptions, setFlashOptions] = useState<string[]>([]);
 
   const currentCard = words[cardIndex];
+
+  // ✅ Generate options on client side only
+  useEffect(() => {
+    const distractors = words
+      .map(w => w.English)
+      .filter(eng => eng !== currentCard.English);
+  
+    // Pick 3 random distractors
+    const selectedDistractors = distractors.sort(() => 0.5 - Math.random()).slice(0, 3);
+  
+    // Combine with correct answer
+    const combined = [...selectedDistractors, currentCard.English];
+  
+    // Shuffle the final 4
+    const shuffledOptions = combined.sort(() => 0.5 - Math.random());
+  
+    setFlashOptions(shuffledOptions);
+  }, [cardIndex, words, currentCard.English]);
+  
+  // ✅ Log speed for debugging
+  useEffect(() => {
+    console.log("Current Flash Speed:", flashSpeed);
+  }, [flashSpeed]);
 
   const reveal = () => {
     setRevealed(true);
@@ -32,35 +59,23 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
     const scoreText = `Score: ${correctCount}/${words.length} (${percentage.toFixed(1)}%)`;
 
     const resultsList = answers.map((answer, index) => {
-      if (answer.correct) {
-        return `${index + 1}. ${answer.word} - ${answer.answer} ✅`;
-      } else {
-        return `${index + 1}. ${answer.word} - ${answer.answer}, but you chose "${currentOption}" ❌`;
-      }
+      return answer.correct
+        ? `${index + 1}. ${answer.word} - ${answer.answer} ✅`
+        : `${index + 1}. ${answer.word} - ${answer.answer}, but you chose "${currentOption}" ❌`;
     }).join('\n');
 
-    if (percentage === 100) {
-      return (
-        <>
-          <div className="text-left">Perfect! {scoreText} {timeText}</div>
-          <div className="whitespace-pre-line mt-4 text-left">{resultsList}</div>
-        </>
-      );
-    } else if (percentage >= 80) {
-      return (
-        <>
-          <div className="text-left">Nice work! {scoreText}. {timeText}</div>
-          <div className="whitespace-pre-line mt-4 text-left">{resultsList}</div>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <div className="text-left">Better luck next time! {scoreText}. {timeText}</div>
-          <div className="whitespace-pre-line mt-4 text-left">{resultsList}</div>
-        </>
-      );
-    }
+    return (
+      <>
+        <div className="text-left">
+          {percentage === 100
+            ? `Perfect! ${scoreText}. ${timeText}`
+            : percentage >= 80
+              ? `Nice work! ${scoreText}. ${timeText}`
+              : `Better luck next time! ${scoreText}. ${timeText}`}
+        </div>
+        <div className="whitespace-pre-line mt-4 text-left">{resultsList}</div>
+      </>
+    );
   };
 
   const next = () => {
@@ -68,7 +83,7 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
       setIsComplete(true);
       return;
     }
-    setCardIndex((prev) => prev + 1);
+    setCardIndex(prev => prev + 1);
     setRevealed(false);
     setIsFlashing(true);
     setLockedOption("");
@@ -78,8 +93,9 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
     setIsFlashing(false);
     setRevealed(false);
     setLockedOption(currentOption);
-  
+
     const isCorrect = currentOption === currentCard.English;
+
     if (isCorrect) {
       setCorrectCount(prev => prev + 1);
       alert("Correct!");
@@ -87,18 +103,37 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
       alert(`Incorrect - you answered "${currentOption}" but the right answer is "${currentCard.English}"`);
     }
 
-    setAnswers(prev => [...prev, {
-      word: currentCard.Spanish,
-      answer: currentCard.English,
-      correct: isCorrect
-    }]);
+    setAnswers(prev => [
+      ...prev,
+      {
+        word: currentCard.Spanish,
+        answer: currentCard.English,
+        correct: isCorrect,
+      },
+    ]);
+
+    if (isCorrect) {
+      setCorrectStreak(prev => {
+        const newStreak = prev + 1;
+        if (newStreak % 3 === 0) {
+          setFlashSpeed(prevSpeed => Math.max(500, prevSpeed * Math.sqrt(0.82)));
+          return 0;
+        }
+        return newStreak;
+      });
+      setWrongStreak(0);
+    } else {
+      setWrongStreak(prev => {
+        const newStreak = prev + 1;
+        if (newStreak % 2 === 0) {
+          setFlashSpeed(prevSpeed => Math.min(5000, prevSpeed * Math.sqrt(1.5)));
+          return 0;
+        }
+        return newStreak;
+      });
+      setCorrectStreak(0);
+    }
   };
-
-  const distractors = words
-    .map((w) => w.English)
-    .filter((eng) => eng !== currentCard.English);
-
-  const flashOptions = [currentCard.English, ...distractors].sort(() => 0.5 - Math.random()).slice(0, 4);
 
   if (isComplete) {
     return (
@@ -122,6 +157,7 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
           revealed={revealed}
           onOptionChange={setCurrentOption}
           lockedOption={lockedOption}
+          flashSpeed={flashSpeed}
         />
       </div>
       <div className="flex justify-center gap-3">

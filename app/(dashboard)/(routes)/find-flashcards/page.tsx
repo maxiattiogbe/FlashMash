@@ -26,9 +26,7 @@ const FindFlashcardsPage = () => {
                 Currently limited to the one Spanish deck below but more decks, languages, and topics coming soon!
             </p>
             <br />
-            <p className="text-md text-black font-bold px-4 lg:px-8">
-                <h1 className="text-2xl font-bold mb-6">Directions: </h1>
-            </p>
+            <h1 className="text-2xl font-bold mb-6 px-4 lg:px-8">Directions:</h1>
             <p className="text-md text-muted-foreground px-4 lg:px-8">
                Click the <strong>stop</strong> button when you see the English definition on the right that you think matches the Spanish word on the left.
             </p>
@@ -37,6 +35,9 @@ const FindFlashcardsPage = () => {
             </p>
             <p className="text-md text-muted-foreground px-4 lg:px-8">
                Click <strong>next</strong> to see the next card or see results when you&apos;ve answered all the cards.
+            </p>
+            <p className="text-md text-muted-foreground px-4 lg:px-8">
+               <strong>Note:</strong> The flashcards will speed up or slow down based on your performance, speeding up ~1.22x every 3 cards answered correctly and slowing down 1.5x every 2 cards answered incorrectly.
             </p>
             <div className="p-10">
                 <h1 className="text-2xl font-bold mb-6">General Spanish Words (Difficulty: Medium)</h1>

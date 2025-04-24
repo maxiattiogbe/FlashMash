@@ -12,17 +12,31 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
   const [currentOption, setCurrentOption] = useState("");
   const [lockedOption, setLockedOption] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
-  const [startTime] = useState(Date.now());
+  const [startTime, setStartTime] = useState<number | null>(null);
   const [isComplete, setIsComplete] = useState(false);
   const [answers, setAnswers] = useState<{ word: string, answer: string, correct: boolean }[]>([]);
   const [flashSpeed, setFlashSpeed] = useState(1000); // initial speed in ms
-  const [correctStreak, setCorrectStreak] = useState(0);
-  const [wrongStreak, setWrongStreak] = useState(0);
   const [flashOptions, setFlashOptions] = useState<string[]>([]);
+  const [wrongStreak, setWrongStreak] = useState(0);
+  const [correctStreak, setCorrectStreak] = useState(0);
+
+  // Set start time after mount to avoid hydration mismatch
+  useEffect(() => {
+    if (!startTime) {
+      const initialTime = Date.now();
+      setStartTime(initialTime);
+      console.log('Start time set to:', initialTime);
+    }
+  }, [startTime]);
+
+  // Log initial flash speed
+  useEffect(() => {
+    console.log('Initial flash speed:', flashSpeed);
+  }, [flashSpeed]);
 
   const currentCard = words[cardIndex];
 
-  // ✅ Generate options on client side only
+  // Generate options on client side only
   useEffect(() => {
     const distractors = words
       .map(w => w.English)
@@ -31,30 +45,17 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
     // Pick 3 random distractors
     const selectedDistractors = distractors.sort(() => 0.5 - Math.random()).slice(0, 3);
   
-    // Combine with correct answer
-    const combined = [...selectedDistractors, currentCard.English];
-  
-    // Shuffle the final 4
-    const shuffledOptions = combined.sort(() => 0.5 - Math.random());
-  
-    setFlashOptions(shuffledOptions);
+    // Combine with correct answer and shuffle
+    setFlashOptions([...selectedDistractors, currentCard.English].sort(() => 0.5 - Math.random()));
   }, [cardIndex, words, currentCard.English]);
-  
-  // ✅ Log speed for debugging
-  useEffect(() => {
-    console.log("Current Flash Speed:", flashSpeed);
-  }, [flashSpeed]);
-
-  const reveal = () => {
-    setRevealed(true);
-    setIsFlashing(false);
-  };
 
   const getFeedback = () => {
+    if (!startTime) return null;
+    
     const percentage = (correctCount / words.length) * 100;
-    const totalSeconds = (Date.now() - startTime) / 1000;
+    const totalSeconds = Math.floor((Date.now() - startTime) / 1000);
     const minutes = Math.floor(totalSeconds / 60);
-    const seconds = Math.floor(totalSeconds % 60);
+    const seconds = totalSeconds % 60;
     const timeText = `Total time: ${minutes} minute${minutes !== 1 ? 's' : ''} and ${seconds} second${seconds !== 1 ? 's' : ''}`;
     const scoreText = `Score: ${correctCount}/${words.length} (${percentage.toFixed(1)}%)`;
 
@@ -98,9 +99,29 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
 
     if (isCorrect) {
       setCorrectCount(prev => prev + 1);
+      setCorrectStreak(prev => prev + 1);
+      setWrongStreak(0);
       alert("Correct!");
+
+      if (correctStreak > 0 && (correctStreak + 1) % 3 === 0) {
+        setFlashSpeed(prevSpeed => {
+          const newSpeed = Math.max(500, prevSpeed * 0.82);
+          console.log('Flash speed increased to:', newSpeed);
+          return newSpeed;
+        });
+      }
     } else {
+      setWrongStreak(prev => prev + 1);
+      setCorrectStreak(0);
       alert(`Incorrect - you answered "${currentOption}" but the right answer is "${currentCard.English}"`);
+
+      if (wrongStreak > 0 && (wrongStreak + 1) % 2 === 0) {
+        setFlashSpeed(prevSpeed => {
+          const newSpeed = Math.min(5000, prevSpeed * 1.5);
+          console.log('Flash speed decreased to:', newSpeed);
+          return newSpeed;
+        });
+      }
     }
 
     setAnswers(prev => [
@@ -111,34 +132,15 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
         correct: isCorrect,
       },
     ]);
-
-    if (isCorrect) {
-      setCorrectStreak(prev => {
-        const newStreak = prev + 1;
-        if (newStreak % 3 === 0) {
-          setFlashSpeed(prevSpeed => Math.max(500, prevSpeed * Math.sqrt(0.82)));
-          return 0;
-        }
-        return newStreak;
-      });
-      setWrongStreak(0);
-    } else {
-      setWrongStreak(prev => {
-        const newStreak = prev + 1;
-        if (newStreak % 2 === 0) {
-          setFlashSpeed(prevSpeed => Math.min(5000, prevSpeed * Math.sqrt(1.5)));
-          return 0;
-        }
-        return newStreak;
-      });
-      setCorrectStreak(0);
-    }
   };
 
   if (isComplete) {
+    const feedback = getFeedback();
+    if (!feedback) return null;
+    
     return (
       <div className="text-center space-y-6">
-        <h2 className="text-2xl font-bold">{getFeedback()}</h2>
+        <h2 className="text-2xl font-bold">{feedback}</h2>
       </div>
     );
   }

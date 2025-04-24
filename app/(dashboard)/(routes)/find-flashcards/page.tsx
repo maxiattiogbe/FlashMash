@@ -31,9 +31,6 @@ const FindFlashcardsPage = () => {
                Click the <strong>stop</strong> button when you see the English definition on the right that you think matches the Spanish word on the left.
             </p>
             <p className="text-md text-muted-foreground px-4 lg:px-8">
-               Click the <strong>reveal</strong> button to see the correct answer.
-            </p>
-            <p className="text-md text-muted-foreground px-4 lg:px-8">
                Click <strong>next</strong> to see the next card or see results when you&apos;ve answered all the cards.
             </p>
             <p className="text-md text-muted-foreground px-4 lg:px-8">

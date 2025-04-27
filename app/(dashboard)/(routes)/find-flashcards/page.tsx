@@ -28,19 +28,27 @@ const FindFlashcardsPage = () => {
             <br />
             <h1 className="text-2xl font-bold mb-6 px-4 lg:px-8">Directions:</h1>
             <p className="text-md text-muted-foreground px-4 lg:px-8">
-               Click <strong>Enable Webcam</strong> to turn on your webcam and enable gesture controls. 
+               Click <strong>Start Webcam</strong> to turn on your webcam and enable gesture controls. 
                This will allow you to use an open hand stop gesture to your webcam to stop the flashcards
                when you see the English definition on the right that you think matches the Spanish word on the left.
             </p>
-            <br />
+            <br/>
             <p className="text-md text-muted-foreground px-4 lg:px-8">
-               Click <strong>Enable Microphone</strong> to turn on your microphone and enable voice controls. 
-               This will allow you to use your voice to stop the flashcards when you to stop the flashcards 
-               by saying &quot;Stop&quot; when you see the English definition on the right that you think matches the Spanish word on the left.
+               OR
             </p>
             <br />
             <p className="text-md text-muted-foreground px-4 lg:px-8">
-               Lastly, clicking the <strong>Stop</strong> button will also stop the flashcards.
+               Click <strong>Start Microphone</strong> to turn on your microphone and enable voice controls. 
+               This will allow you to use your voice to stop the flashcards when you to stop the flashcards 
+               by saying &quot;Stop&quot; when you see the English definition on the right that you think matches the Spanish word on the left.
+            </p>
+            <br/>
+            <p className="text-md text-muted-foreground px-4 lg:px-8">
+               OR
+            </p>
+            <br />
+            <p className="text-md text-muted-foreground px-4 lg:px-8">
+               Clicking the <strong>Stop</strong> button is currently the most reliable way to stop the flashcards.
             </p>
             <br />
             <p className="text-md text-muted-foreground px-4 lg:px-8">

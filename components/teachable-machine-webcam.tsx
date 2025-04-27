@@ -96,12 +96,12 @@ const TeachableMachineWebcam = ({ onOpenHand }: TeachableMachineWebcamProps) => 
     if (!webcamRef.current || !modelRef.current || !labelContainerRef.current) return;
 
     const predictions = await modelRef.current.predict(webcamRef.current.canvas);
-    predictions.forEach((pred, i) => {
-      const label = labelContainerRef.current?.childNodes[i] as HTMLDivElement;
-      if (label) {
-        label.innerText = `${pred.className}: ${pred.probability.toFixed(2)}`;
-      }
-    });
+    // predictions.forEach((pred, i) => {
+    //   const label = labelContainerRef.current?.childNodes[i] as HTMLDivElement;
+    //   if (label) {
+    //     label.innerText = `${pred.className}: ${pred.probability.toFixed(2)}`;
+    //   }
+    // });
 
     // Check if open hand probability is high enough
     const openHand = predictions.find(p => p.className.toLowerCase().includes("open") && p.probability >= 0.9);
@@ -125,7 +125,7 @@ const TeachableMachineWebcam = ({ onOpenHand }: TeachableMachineWebcamProps) => 
     <div className="flex flex-col items-center space-y-4">
       {!isRunning ? (
         <button onClick={handleStart} className="px-6 py-2 bg-[#4169e1] text-white rounded">
-          Enable Webcam
+          Start Webcam
         </button>
       ) : (
         <button onClick={handleStop} className="px-6 py-2 bg-red-600 text-white rounded">

@@ -2,9 +2,9 @@
 
 import { 
     Search,
-    SquareAsterisk,
+    // SquareAsterisk,
     ArrowRight,
-    Upload,
+    // Upload,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -19,20 +19,20 @@ const tools = [
         color: "text-[#4169e1]",
         bgColor: "bg-[#4169e1]/10"
     },
-    {
-        label: "Import Flashcards",
-        icon: Upload,
-        href: "/import-flashcards",
-        color: "text-[#4169e1]",
-        bgColor: "bg-[#4169e1]/10"
-    },
-    {
-        label: "Generate Flashcards",
-        icon: SquareAsterisk,
-        href: "/generate-flashcards",
-        color: "text-[#4169e1]",
-        bgColor: "bg-[#4169e1]/10"
-    }
+    // {
+    //     label: "Import Flashcards",
+    //     icon: Upload,
+    //     href: "/import-flashcards",
+    //     color: "text-[#4169e1]",
+    //     bgColor: "bg-[#4169e1]/10"
+    // },
+    // {
+    //     label: "Generate Flashcards",
+    //     icon: SquareAsterisk,
+    //     href: "/generate-flashcards",
+    //     color: "text-[#4169e1]",
+    //     bgColor: "bg-[#4169e1]/10"
+    // }
 ]
 
 const DashboardPage = () => {

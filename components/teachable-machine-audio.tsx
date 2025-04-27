@@ -85,7 +85,7 @@ const TeachableMachineAudio = ({ onVoiceStop }: TeachableMachineAudioProps) => {
       }
 
       const stopIndex = classLabels.findIndex(label => label.toLowerCase() === "stop");
-      if (stopIndex !== -1 && scores[stopIndex] >= 0.75) {
+      if (stopIndex !== -1 && scores[stopIndex] >= 0.9) {
         console.log("Voice Stop detected, triggering stop...");
         onVoiceStop();
       }

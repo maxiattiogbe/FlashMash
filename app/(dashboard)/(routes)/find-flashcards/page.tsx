@@ -6,7 +6,7 @@ import { loadCsvDeck } from "@/lib/loadCsvDeck";
 import CardPair from "@/components/card-pair";
 
 const FindFlashcardsPage = () => {
-    const filePath = path.join(process.cwd(), "decks/flashmash_decks/spanish/medium/spanish_words_medium.csv");
+    const filePath = path.join(process.cwd(), "decks/flashmash_decks/spanish/medium/spanish_medium_general.csv");
     const deck = loadCsvDeck(filePath); // [{ Spanish Word: "...", English Definition: "..." }]
     const words = deck.map((entry: { "Spanish Word": string; "English Definition": string }) => ({
         Spanish: entry["Spanish Word"],

@@ -9,9 +9,9 @@ import { cn } from "@/lib/utils";
 import { 
     LayoutDashboard, 
     Search, 
-    Settings,
-    SquareAsterisk,
-    Upload,
+    // Settings,
+    // SquareAsterisk,
+    // Upload,
 } from "lucide-react";
 
 const montserrat = Montserrat({
@@ -32,23 +32,23 @@ const routes = [
         href: "/find-flashcards",
         color: "text-[#89CFF0]"
     },
-    {
-        label: "Import Flashcards",
-        icon: Upload,
-        href: "/import-flashcards",
-        color: "text-[#89CFF0]"
-    },
-    {
-        label: "Generate Flashcards",
-        icon: SquareAsterisk,
-        href: "/generate-flashcards",
-        color: "text-[#89CFF0]"
-    },
-    {
-        label: "Settings",
-        icon: Settings,
-        href: "/settings",
-    }
+    // {
+    //     label: "Import Flashcards",
+    //     icon: Upload,
+    //     href: "/import-flashcards",
+    //     color: "text-[#89CFF0]"
+    // },
+    // {
+    //     label: "Generate Flashcards",
+    //     icon: SquareAsterisk,
+    //     href: "/generate-flashcards",
+    //     color: "text-[#89CFF0]"
+    // },
+    // {
+    //     label: "Settings",
+    //     icon: Settings,
+    //     href: "/settings",
+    // }
 ]
 
 const Sidebar = () => {

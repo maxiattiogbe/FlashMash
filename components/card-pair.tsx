@@ -27,14 +27,14 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
     if (!startTime) {
       const initialTime = Date.now();
       setStartTime(initialTime);
-      console.log('Start time set to:', initialTime);
+      // console.log('Start time set to:', initialTime);
     }
   }, [startTime]);
 
-  // Log initial flash speed
-  useEffect(() => {
-    console.log('Initial flash speed:', flashSpeed);
-  }, [flashSpeed]);
+  // // Log initial flash speed
+  // useEffect(() => {
+  //   console.log('Initial flash speed:', flashSpeed);
+  // }, [flashSpeed]);
 
   const currentCard = words[cardIndex];
 
@@ -108,7 +108,7 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
       if (correctStreak > 0 && (correctStreak + 1) % 3 === 0) {
         setFlashSpeed(prevSpeed => {
           const newSpeed = Math.max(500, prevSpeed * 0.82);
-          console.log('Flash speed increased to:', newSpeed);
+          // console.log('Flash speed increased to:', newSpeed);
           return newSpeed;
         });
       }
@@ -120,7 +120,7 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
       if (wrongStreak > 0 && (wrongStreak + 1) % 2 === 0) {
         setFlashSpeed(prevSpeed => {
           const newSpeed = Math.min(5000, prevSpeed * 1.5);
-          console.log('Flash speed decreased to:', newSpeed);
+          // console.log('Flash speed decreased to:', newSpeed);
           return newSpeed;
         });
       }

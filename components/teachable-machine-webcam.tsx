@@ -129,7 +129,7 @@ const TeachableMachineWebcam = ({ onOpenHand }: TeachableMachineWebcamProps) => 
         </button>
       ) : (
         <button onClick={handleStop} className="px-6 py-2 bg-red-600 text-white rounded">
-          Disable Gesture Controls
+          Disable Webcam
         </button>
       )}
       <div ref={webcamContainerRef} />

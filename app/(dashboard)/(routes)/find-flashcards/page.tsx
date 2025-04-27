@@ -31,7 +31,16 @@ const FindFlashcardsPage = () => {
                Click <strong>Enable Webcam</strong> to turn on your webcam and enable gesture controls. 
                This will allow you to use an open hand stop gesture to your webcam to stop the flashcards
                when you see the English definition on the right that you think matches the Spanish word on the left.
-               Alternatively, you can instead click the <strong>Stop</strong> button to stop the flashcards.
+            </p>
+            <br />
+            <p className="text-md text-muted-foreground px-4 lg:px-8">
+               Click <strong>Enable Microphone</strong> to turn on your microphone and enable voice controls. 
+               This will allow you to use your voice to stop the flashcards when you to stop the flashcards 
+               by saying &quot;Stop&quot; when you see the English definition on the right that you think matches the Spanish word on the left.
+            </p>
+            <br />
+            <p className="text-md text-muted-foreground px-4 lg:px-8">
+               Lastly, clicking the <strong>Stop</strong> button will also stop the flashcards.
             </p>
             <br />
             <p className="text-md text-muted-foreground px-4 lg:px-8">

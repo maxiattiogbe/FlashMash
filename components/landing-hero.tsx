@@ -14,7 +14,7 @@ export const LandingHero = () => {
                 <h1>Interactive Digital Flashcards Featuring</h1>
                 <div className="text-transparent bg-clip-text bg-gradient-to-r from-[#4169e1] to-[#89CFF0]">
                     <Typewriter
-                        text={["Speech Controls", "Gesture Controls", "Adaptive Difficulty"]}
+                        text={["Voice Controls", "Gesture Controls", "Adaptive Difficulty"]}
                         loop={true}
                         cursor={true}
                         speed={100}

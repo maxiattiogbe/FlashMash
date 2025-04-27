@@ -28,11 +28,16 @@ const FindFlashcardsPage = () => {
             <br />
             <h1 className="text-2xl font-bold mb-6 px-4 lg:px-8">Directions:</h1>
             <p className="text-md text-muted-foreground px-4 lg:px-8">
-               Click the <strong>stop</strong> button when you see the English definition on the right that you think matches the Spanish word on the left.
+               Click <strong>Enable Webcam</strong> to turn on your webcam and enable gesture controls. 
+               This will allow you to use an open hand stop gesture to your webcam to stop the flashcards
+               when you see the English definition on the right that you think matches the Spanish word on the left.
+               Alternatively, you can instead click the <strong>Stop</strong> button to stop the flashcards.
             </p>
+            <br />
             <p className="text-md text-muted-foreground px-4 lg:px-8">
-               Click <strong>next</strong> to see the next card or see results when you&apos;ve answered all the cards.
+               Click <strong>Next</strong> to see the next card or <strong>See Results</strong> when you&apos;ve answered all the cards.
             </p>
+            <br />
             <p className="text-md text-muted-foreground px-4 lg:px-8">
                <strong>Note:</strong> The flashcards will speed up or slow down based on your performance, speeding up ~1.22x every 3 cards answered correctly and slowing down 1.5x every 2 cards answered incorrectly.
             </p>

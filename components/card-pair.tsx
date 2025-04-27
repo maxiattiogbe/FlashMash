@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import FixedCard from "./fixed-card";
 import FlashingCard from "./flashing-card";
 import { Button } from "@/components/ui/button";
+import TeachableMachineWebcam from "@/components/teachable-machine-webcam";
 
 const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) => {
   const [cardIndex, setCardIndex] = useState(0);
@@ -147,6 +148,7 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
 
   return (
     <div className="text-center space-y-6">
+      <TeachableMachineWebcam onOpenHand={stop}/>
       <div className="text-lg font-semibold mb-4">
         Card {cardIndex + 1}/{words.length}
       </div>

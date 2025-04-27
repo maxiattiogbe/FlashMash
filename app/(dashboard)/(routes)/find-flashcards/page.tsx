@@ -23,7 +23,7 @@ const FindFlashcardsPage = () => {
                 bgColor="bg-[#4169e1]/10"
             />
             <p className="text-md text-muted-foreground px-4 lg:px-8">
-                Currently limited to the one Spanish deck below but more decks, languages, and topics coming soon!
+                Currently limited to the one Spanish deck below.
             </p>
             <br />
             <h1 className="text-2xl font-bold mb-6 px-4 lg:px-8">Directions:</h1>

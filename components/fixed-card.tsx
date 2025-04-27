@@ -6,7 +6,7 @@ interface FixedCardProps {
 
 const FixedCard = ({ word }: FixedCardProps) => {
   return (
-    <div className="text-2xl font-semibold w-48 h-32 sm:w-56 sm:h-36 md:w-64 md:h-40 lg:w-72 lg:h-48 border rounded-lg shadow-md bg-white text-[#4169e1] flex items-center justify-center">
+    <div className="text-4xl font-semibold w-60 h-40 sm:w-70 sm:h-50 md:w-80 md:h-60 lg:w-120 lg:h-80 border rounded-lg shadow-md bg-white text-[#4169e1] flex items-center justify-center">
       {word}
     </div>
   );

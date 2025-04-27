@@ -163,8 +163,8 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
         />
       </div>
       <div className="flex justify-center gap-3">
-        <Button onClick={stop} disabled={!isFlashing}>Stop</Button>
-        <Button onClick={next}>{cardIndex === words.length - 1 ? 'See Results' : 'Next'}</Button>
+        <Button onClick={stop} size = "lg" disabled={!isFlashing} className="text-lg p-4">Stop</Button>
+        <Button onClick={next} size = "lg" className="text-lg p-4">{cardIndex === words.length - 1 ? 'See Results' : 'Next'}</Button>
       </div>
     </div>
   );

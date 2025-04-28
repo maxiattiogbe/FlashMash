@@ -17,7 +17,7 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
   const [startTime, setStartTime] = useState<number | null>(null);
   const [isComplete, setIsComplete] = useState(false);
   const [answers, setAnswers] = useState<{ word: string, answer: string, correct: boolean }[]>([]);
-  const [flashSpeed, setFlashSpeed] = useState(3000); // initial speed in ms
+  const [flashSpeed, setFlashSpeed] = useState(5000); // initial speed in ms
   const [flashOptions, setFlashOptions] = useState<string[]>([]);
   const [wrongStreak, setWrongStreak] = useState(0);
   const [correctStreak, setCorrectStreak] = useState(0);
@@ -119,7 +119,7 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
 
       if (correctStreak > 0 && (correctStreak + 1) % 3 === 0) {
         setFlashSpeed(prevSpeed => {
-          const newSpeed = Math.max(500, prevSpeed * 2/3);
+          const newSpeed = Math.max(2000, prevSpeed * 2/3);
           // console.log('Flash speed increased to:', newSpeed);
           return newSpeed;
         });
@@ -134,7 +134,7 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
 
       if (wrongStreak > 0 && (wrongStreak + 1) % 2 === 0) {
         setFlashSpeed(prevSpeed => {
-          const newSpeed = Math.min(5000, prevSpeed * 1.5);
+          const newSpeed = Math.min(10000, prevSpeed * 1.5);
           // console.log('Flash speed decreased to:', newSpeed);
           return newSpeed;
         });

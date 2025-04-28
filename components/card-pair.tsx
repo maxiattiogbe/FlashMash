@@ -119,7 +119,7 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
 
       if (correctStreak > 0 && (correctStreak + 1) % 3 === 0) {
         setFlashSpeed(prevSpeed => {
-          const newSpeed = Math.max(500, prevSpeed * 0.82);
+          const newSpeed = Math.max(500, prevSpeed * 2/3);
           // console.log('Flash speed increased to:', newSpeed);
           return newSpeed;
         });

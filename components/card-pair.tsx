@@ -17,10 +17,13 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
   const [startTime, setStartTime] = useState<number | null>(null);
   const [isComplete, setIsComplete] = useState(false);
   const [answers, setAnswers] = useState<{ word: string, answer: string, correct: boolean }[]>([]);
-  const [flashSpeed, setFlashSpeed] = useState(1000); // initial speed in ms
+  const [flashSpeed, setFlashSpeed] = useState(3000); // initial speed in ms
   const [flashOptions, setFlashOptions] = useState<string[]>([]);
   const [wrongStreak, setWrongStreak] = useState(0);
   const [correctStreak, setCorrectStreak] = useState(0);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [feedbackColor, setFeedbackColor] = useState<string>("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Set start time after mount to avoid hydration mismatch
   useEffect(() => {
@@ -40,6 +43,8 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
 
   // Generate options on client side only
   useEffect(() => {
+    if (!currentCard) return;
+
     const distractors = words
       .map(w => w.English)
       .filter(eng => eng !== currentCard.English);
@@ -49,10 +54,10 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
   
     // Combine with correct answer and shuffle
     setFlashOptions([...selectedDistractors, currentCard.English].sort(() => 0.5 - Math.random()));
-  }, [cardIndex, words, currentCard.English]);
+  }, [cardIndex, words, currentCard]);
 
   const getFeedback = () => {
-    if (!startTime) return null;
+    if (!startTime || !currentCard) return null;
     
     const percentage = (correctCount / words.length) * 100;
     const totalSeconds = Math.floor((Date.now() - startTime) / 1000);
@@ -90,9 +95,15 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
     setRevealed(false);
     setIsFlashing(true);
     setLockedOption("");
+    setFeedbackMessage(null);
+    setFeedbackColor("");
+    setIsProcessing(false);
   };
 
   const stop = () => {
+    if (!currentCard || isProcessing || !isFlashing) return;
+    
+    setIsProcessing(true);
     setIsFlashing(false);
     setRevealed(false);
     setLockedOption(currentOption);
@@ -103,7 +114,8 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
       setCorrectCount(prev => prev + 1);
       setCorrectStreak(prev => prev + 1);
       setWrongStreak(0);
-      alert("Correct!");
+      setFeedbackMessage("Correct!");
+      setFeedbackColor("text-green-500");
 
       if (correctStreak > 0 && (correctStreak + 1) % 3 === 0) {
         setFlashSpeed(prevSpeed => {
@@ -112,10 +124,13 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
           return newSpeed;
         });
       }
+
+      setTimeout(next, 1000); // Display feedback for 1 second if correct
     } else {
       setWrongStreak(prev => prev + 1);
       setCorrectStreak(0);
-      alert(`Incorrect - you answered "${currentOption}" but the right answer is "${currentCard.English}"`);
+      setFeedbackMessage(`Incorrect - you answered "${currentOption}" but the right answer is "${currentCard.English}"`);
+      setFeedbackColor("text-red-500");
 
       if (wrongStreak > 0 && (wrongStreak + 1) % 2 === 0) {
         setFlashSpeed(prevSpeed => {
@@ -124,6 +139,8 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
           return newSpeed;
         });
       }
+
+      setTimeout(next, 5000); // Display feedback for 5 seconds if incorrect
     }
 
     setAnswers(prev => [
@@ -147,11 +164,16 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
     );
   }
 
+  // Early return if no words are provided or currentCard is undefined
+  if (!words || words.length === 0 || !currentCard) {
+    return <div className="text-center">No flashcards available</div>;
+  }
+
   return (
     <div className="text-center space-y-6">
       <div className="flex justify-center space-x-4">
-        <TeachableMachineWebcam onOpenHand={stop} />
-        <TeachableMachineAudio onVoiceStop={stop} />
+        <TeachableMachineWebcam onOpenHand={stop} isFlashing={isFlashing} />
+        <TeachableMachineAudio onVoiceStop={stop} isFlashing={isFlashing} />
       </div>
       <div className="text-lg font-semibold mb-4">
         Card {cardIndex + 1}/{words.length}
@@ -168,9 +190,11 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
           flashSpeed={flashSpeed}
         />
       </div>
+      <div className={`text-lg font-semibold mb-4 ${feedbackColor}`}>
+        {feedbackMessage}
+      </div>
       <div className="flex justify-center gap-3">
-        <Button onClick={stop} size="lg" disabled={!isFlashing} className="text-lg p-4">Stop</Button>
-        <Button onClick={next} size="lg" className="text-lg p-4">{cardIndex === words.length - 1 ? 'See Results' : 'Next'}</Button>
+        <Button onClick={stop} size="lg" disabled={!isFlashing || isProcessing} className="text-lg p-4">Stop</Button>
       </div>
     </div>
   );

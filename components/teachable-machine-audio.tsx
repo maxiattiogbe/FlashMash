@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 interface Recognizer {
   listen: (callback: (result: Result) => void, options: ListenOptions) => void;
@@ -37,12 +37,14 @@ const AUDIO_MODEL_URL = "https://teachablemachine.withgoogle.com/models/dPCPVXqM
 
 interface TeachableMachineAudioProps {
   onVoiceStop: () => void;
+  isFlashing: boolean;
 }
 
-const TeachableMachineAudio = ({ onVoiceStop }: TeachableMachineAudioProps) => {
+const TeachableMachineAudio = ({ onVoiceStop, isFlashing }: TeachableMachineAudioProps) => {
   const labelContainerRef = useRef<HTMLDivElement>(null);
   const [isRunning, setIsRunning] = useState(false);
   const recognizerRef = useRef<Recognizer | null>(null);
+  const hasTriggeredRef = useRef(false);
 
   const loadScript = (src: string): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -85,8 +87,9 @@ const TeachableMachineAudio = ({ onVoiceStop }: TeachableMachineAudioProps) => {
       // }
 
       const stopIndex = classLabels.findIndex(label => label.toLowerCase() === "stop");
-      if (stopIndex !== -1 && scores[stopIndex] >= 0.9) {
+      if (stopIndex !== -1 && scores[stopIndex] >= 0.9 && isFlashing && !hasTriggeredRef.current) {
         console.log("Voice Stop detected, triggering stop...");
+        hasTriggeredRef.current = true;
         onVoiceStop();
       }
     }, {
@@ -99,6 +102,7 @@ const TeachableMachineAudio = ({ onVoiceStop }: TeachableMachineAudioProps) => {
 
   const handleStart = () => {
     setIsRunning(true);
+    hasTriggeredRef.current = false;
     init();
   };
 
@@ -106,6 +110,13 @@ const TeachableMachineAudio = ({ onVoiceStop }: TeachableMachineAudioProps) => {
     setIsRunning(false);
     recognizerRef.current?.stopListening();
   };
+
+  // Reset trigger when isFlashing changes to true
+  useEffect(() => {
+    if (isFlashing) {
+      hasTriggeredRef.current = false;
+    }
+  }, [isFlashing]);
 
   return (
     <div className="flex flex-col items-center space-y-4">

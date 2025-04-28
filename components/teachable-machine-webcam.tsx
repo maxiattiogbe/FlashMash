@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 interface Prediction {
   className: string;
@@ -33,15 +33,16 @@ const MODEL_URL = "https://teachablemachine.withgoogle.com/models/VyoPNGSIc/";
 
 interface TeachableMachineWebcamProps {
   onOpenHand: () => void;
+  isFlashing: boolean;
 }
 
-const TeachableMachineWebcam = ({ onOpenHand }: TeachableMachineWebcamProps) => {
+const TeachableMachineWebcam = ({ onOpenHand, isFlashing }: TeachableMachineWebcamProps) => {
   const webcamContainerRef = useRef<HTMLDivElement>(null);
   const labelContainerRef = useRef<HTMLDivElement>(null);
-
   const webcamRef = useRef<Webcam | null>(null);
   const modelRef = useRef<Model | null>(null);
   const [isRunning, setIsRunning] = useState(false);
+  const hasTriggeredRef = useRef(false);
 
   const loadScript = (src: string): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -103,16 +104,18 @@ const TeachableMachineWebcam = ({ onOpenHand }: TeachableMachineWebcamProps) => 
     //   }
     // });
 
-    // Check if open hand probability is high enough
+    // Check if open hand probability is high enough and card is flashing
     const openHand = predictions.find(p => p.className.toLowerCase().includes("open") && p.probability >= 0.9);
-    if (openHand) {
+    if (openHand && isFlashing && !hasTriggeredRef.current) {
       console.log("Open hand detected, triggering stop...");
-      onOpenHand(); // 🚀 Trigger stop function from parent!
+      hasTriggeredRef.current = true;
+      onOpenHand();
     }
   };
 
   const handleStart = () => {
     setIsRunning(true);
+    hasTriggeredRef.current = false;
     init();
   };
 
@@ -120,6 +123,13 @@ const TeachableMachineWebcam = ({ onOpenHand }: TeachableMachineWebcamProps) => 
     setIsRunning(false);
     webcamRef.current?.stop();
   };
+
+  // Reset trigger when isFlashing changes to true
+  useEffect(() => {
+    if (isFlashing) {
+      hasTriggeredRef.current = false;
+    }
+  }, [isFlashing]);
 
   return (
     <div className="flex flex-col items-center space-y-4">

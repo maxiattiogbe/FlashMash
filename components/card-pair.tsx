@@ -119,6 +119,7 @@ const CardPair = ({ words }: { words: { Spanish: string; English: string }[] }) 
 
       if (correctStreak > 0 && (correctStreak + 1) % 3 === 0) {
         setFlashSpeed(prevSpeed => {
+          // The audio model needs at least 2 seconds to process the audio
           const newSpeed = Math.max(2000, prevSpeed * 2/3);
           // console.log('Flash speed increased to:', newSpeed);
           return newSpeed;

@@ -52,10 +52,6 @@ const FindFlashcardsPage = () => {
             </p>
             <br />
             <p className="text-md text-muted-foreground px-4 lg:px-8">
-               Click <strong>Next</strong> to see the next card or <strong>See Results</strong> when you&apos;ve answered all the cards.
-            </p>
-            <br />
-            <p className="text-md text-muted-foreground px-4 lg:px-8">
                <strong>Note:</strong> The flashcards will speed up or slow down based on your performance, speeding up 1.5x every 3 cards answered correctly and slowing down 1.5x every 2 cards answered incorrectly.
             </p>
             <div className="p-10">

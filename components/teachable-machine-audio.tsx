@@ -79,12 +79,12 @@ const TeachableMachineAudio = ({ onVoiceStop, isFlashing }: TeachableMachineAudi
 
     recognizer.listen(result => {
       const scores = result.scores;
-      // for (let i = 0; i < classLabels.length; i++) {
-      //   const label = labelContainerRef.current?.childNodes[i] as HTMLDivElement;
-      //   if (label) {
-      //     label.innerText = `${classLabels[i]}: ${scores[i].toFixed(2)}`;
-      //   }
-      // }
+      for (let i = 0; i < classLabels.length; i++) {
+        const label = labelContainerRef.current?.childNodes[i] as HTMLDivElement;
+        if (label) {
+          label.innerText = `I'm hearing ${classLabels[i]} with probability ${scores[i].toFixed(2)}.`;
+        }
+      }
 
       const stopIndex = classLabels.findIndex(label => label.toLowerCase() === "stop");
       if (stopIndex !== -1 && scores[stopIndex] >= 0.9 && isFlashing && !hasTriggeredRef.current) {

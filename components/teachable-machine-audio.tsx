@@ -100,7 +100,7 @@ const TeachableMachineAudio = ({
         track.className = "w-full h-2 bg-gray-200 rounded mt-1";
 
         const fill = document.createElement("div");      // blue fill
-        fill.className = "h-full bg-blue-500 rounded";
+        fill.className = "h-full bg-[#4169e1] rounded";
         fill.style.width = "0%";
 
         track.appendChild(fill);

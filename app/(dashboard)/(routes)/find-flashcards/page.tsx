@@ -48,8 +48,8 @@ const FindFlashcardsPage = () => {
                             when you see the English definition on the right that you think matches the Spanish word on the left.
                             This works best when you spread out your fingers and place your hand in the center of the webcam frame.
                             Click <strong>Stop Webcam</strong> to turn off your webcam and disable gesture controls at which point,
-                            you can play just using the stop button or switch back on the webcam controls at any time. Refresh the
-                            the page first to be able to switch to microphone controls.
+                            you can only play using the stop button for the rest of the game. Refresh the page to restart the game 
+                            to be able to turn back on the webcame or to switch to microphone controls.
                         </p>
                         <br/>
                         <p className="text-lg text-muted-foreground">
@@ -61,8 +61,8 @@ const FindFlashcardsPage = () => {
                             This will allow you to use your voice to stop the flashcards when you to stop the flashcards 
                             by saying &quot;Stop&quot; when you see the English definition on the right that you think matches the Spanish word on the left.
                             Click <strong>Stop Microphone</strong> to turn off your microphone and disable voice controls at which point,
-                            you can play just using the stop button or switch back on the microphone controls at any time. Refresh the
-                            the page first to be able to switch to webcam controls.
+                            you can only play using the stop button for the rest of the game. Refresh the page to restart the game 
+                            to be able to turn back on the microphone or to switch to webcam controls.
                         </p>
                         <br/>
                         <p className="text-lg text-muted-foreground">

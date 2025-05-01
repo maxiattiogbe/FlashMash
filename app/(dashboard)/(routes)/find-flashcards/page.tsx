@@ -39,9 +39,17 @@ const FindFlashcardsPage = () => {
                     </AccordionTrigger>
                     <AccordionContent className="px-4 lg:px-8">
                         <p className="text-lg text-muted-foreground">
+                            In addition to using the <strong>Stop</strong> button, you can currently play FlashMash with <strong>either</strong> your <strong>webcam</strong> or <strong>microphone</strong> but <strong> not both at the same time</strong>.
+                        </p>
+                        <br/>
+                        <p className="text-lg text-muted-foreground">
                             Click <strong>Start Webcam</strong> to turn on your webcam and enable gesture controls. 
                             This will allow you to use an open hand stop gesture to your webcam to stop the flashcards
                             when you see the English definition on the right that you think matches the Spanish word on the left.
+                            This works best when you spread out your fingers and place your hand in the center of the webcam frame.
+                            Click <strong>Stop Webcam</strong> to turn off your webcam and disable gesture controls at which point,
+                            you can play just using the stop button or switch back on the webcam controls at any time. Refresh the
+                            the page first to be able to switch to microphone controls.
                         </p>
                         <br/>
                         <p className="text-lg text-muted-foreground">
@@ -52,6 +60,9 @@ const FindFlashcardsPage = () => {
                             Click <strong>Start Microphone</strong> to turn on your microphone and enable voice controls. 
                             This will allow you to use your voice to stop the flashcards when you to stop the flashcards 
                             by saying &quot;Stop&quot; when you see the English definition on the right that you think matches the Spanish word on the left.
+                            Click <strong>Stop Microphone</strong> to turn off your microphone and disable voice controls at which point,
+                            you can play just using the stop button or switch back on the microphone controls at any time. Refresh the
+                            the page first to be able to switch to webcam controls.
                         </p>
                         <br/>
                         <p className="text-lg text-muted-foreground">
@@ -59,7 +70,7 @@ const FindFlashcardsPage = () => {
                         </p>
                         <br />
                         <p className="text-lg text-muted-foreground">
-                            Clicking the <strong>Stop</strong> button is currently the most reliable way to stop the flashcards.
+                            Clicking the <strong>Stop</strong> button is currently the most reliable way to stop the flashcards and works with both webcam and microphone.
                         </p>
                         <br />
                         <p className="text-lg text-muted-foreground">

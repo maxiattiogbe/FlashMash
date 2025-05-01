@@ -2,16 +2,15 @@
 
 import { useRef, useState, useEffect } from "react";
 
+/* ----------------- Teachable-Machine Image types ---------------- */
 interface Prediction {
   className: string;
   probability: number;
 }
-
 interface Model {
-  predict: (input: HTMLCanvasElement) => Promise<Prediction[]>;
+  predict: (canvas: HTMLCanvasElement) => Promise<Prediction[]>;
   getTotalClasses: () => number;
 }
-
 interface Webcam {
   canvas: HTMLCanvasElement;
   setup: () => Promise<void>;
@@ -19,69 +18,62 @@ interface Webcam {
   stop: () => void;
   update: () => void;
 }
-
 declare global {
   interface Window {
     tmImage: {
-      load: (modelURL: string, metadataURL: string) => Promise<Model>;
-      Webcam: new (width: number, height: number, flip: boolean) => Webcam;
+      load: (m: string, meta: string) => Promise<Model>;
+      Webcam: new (w: number, h: number, flip: boolean) => Webcam;
     };
   }
 }
+/* ---------------------------------------------------------------- */
 
 const MODEL_URL = "https://teachablemachine.withgoogle.com/models/VyoPNGSIc/";
 
-interface TeachableMachineWebcamProps {
+interface Props {
   onOpenHand: () => void;
   isFlashing: boolean;
+  disabled: boolean;         // <-- NEW
+  onStart: () => void;       // <-- NEW
+  onStop: () => void;        // <-- NEW
 }
 
-const TeachableMachineWebcam = ({ onOpenHand, isFlashing }: TeachableMachineWebcamProps) => {
+const TeachableMachineWebcam = ({
+  onOpenHand,
+  isFlashing,
+  disabled,
+  onStart,
+  onStop,
+}: Props) => {
   const webcamContainerRef = useRef<HTMLDivElement>(null);
-  const labelContainerRef = useRef<HTMLDivElement>(null);
-  const webcamRef = useRef<Webcam | null>(null);
-  const modelRef = useRef<Model | null>(null);
+  const webcamRef   = useRef<Webcam | null>(null);
+  const modelRef    = useRef<Model  | null>(null);
+
   const [isRunning, setIsRunning] = useState(false);
   const hasTriggeredRef = useRef(false);
 
-  const loadScript = (src: string): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = src;
-      script.async = true;
-      script.onload = () => resolve();
-      script.onerror = (error) => reject(error);
-      document.body.appendChild(script);
+  const loadScript = (src: string) =>
+    new Promise<void>((res, rej) => {
+      const s = document.createElement("script");
+      s.src = src; s.async = true; s.onload = () => res(); s.onerror = rej;
+      document.body.appendChild(s);
     });
-  };
 
   const init = async () => {
     await loadScript("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js");
     await loadScript("https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js");
 
     const modelURL = MODEL_URL + "model.json";
-    const metadataURL = MODEL_URL + "metadata.json";
+    const metaURL  = MODEL_URL + "metadata.json";
 
-    const model = await window.tmImage.load(modelURL, metadataURL);
-    modelRef.current = model;
+    modelRef.current  = await window.tmImage.load(modelURL, metaURL);
+    webcamRef.current = new window.tmImage.Webcam(200, 200, true);
 
-    const webcam = new window.tmImage.Webcam(200, 200, true);
-    await webcam.setup();
-    await webcam.play();
-    webcamRef.current = webcam;
+    await webcamRef.current.setup();
+    await webcamRef.current.play();
 
-    if (webcamContainerRef.current) {
-      webcamContainerRef.current.innerHTML = "";
-      webcamContainerRef.current.appendChild(webcam.canvas);
-    }
-
-    if (labelContainerRef.current) {
-      labelContainerRef.current.innerHTML = "";
-      for (let i = 0; i < model.getTotalClasses(); i++) {
-        const div = document.createElement("div");
-        labelContainerRef.current.appendChild(div);
-      }
-    }
+    webcamContainerRef.current!.innerHTML = "";
+    webcamContainerRef.current!.appendChild(webcamRef.current.canvas);
 
     requestAnimationFrame(loop);
   };
@@ -94,56 +86,54 @@ const TeachableMachineWebcam = ({ onOpenHand, isFlashing }: TeachableMachineWebc
   };
 
   const predict = async () => {
-    if (!webcamRef.current || !modelRef.current || !labelContainerRef.current) return;
+    if (!modelRef.current || !webcamRef.current) return;
+    const preds = await modelRef.current.predict(webcamRef.current.canvas);
 
-    const predictions = await modelRef.current.predict(webcamRef.current.canvas);
-    // predictions.forEach((pred, i) => {
-    //   const label = labelContainerRef.current?.childNodes[i] as HTMLDivElement;
-    //   if (label) {
-    //     label.innerText = `${pred.className}: ${pred.probability.toFixed(2)}`;
-    //   }
-    // });
-
-    // Check if open hand probability is high enough and card is flashing
-    const openHand = predictions.find(p => p.className.toLowerCase().includes("open") && p.probability >= 0.9);
-    if (openHand && isFlashing && !hasTriggeredRef.current) {
-      console.log("Open hand detected, triggering stop...");
+    const open = preds.find(p => p.className.toLowerCase().includes("open") && p.probability >= 0.9);
+    if (open && isFlashing && !hasTriggeredRef.current) {
       hasTriggeredRef.current = true;
       onOpenHand();
     }
   };
 
+  /* ---------- controls ---------- */
   const handleStart = () => {
     setIsRunning(true);
     hasTriggeredRef.current = false;
+    onStart();          // inform parent
     init();
   };
-
   const handleStop = () => {
     setIsRunning(false);
+    onStop();           // inform parent
     webcamRef.current?.stop();
   };
 
-  // Reset trigger when isFlashing changes to true
+  /* reset trigger whenever flashing restarts */
   useEffect(() => {
-    if (isFlashing) {
-      hasTriggeredRef.current = false;
-    }
+    if (isFlashing) hasTriggeredRef.current = false;
   }, [isFlashing]);
 
   return (
     <div className="flex flex-col items-center space-y-4">
       {!isRunning ? (
-        <button onClick={handleStart} className="px-6 py-2 bg-[#4169e1] text-white rounded">
-          Start Webcam
+        <button
+          onClick={handleStart}
+          disabled={disabled}
+          className={`px-6 py-2 rounded ${disabled ? "bg-gray-400 cursor-not-allowed text-white" : "bg-[#4169e1] text-white"}`}
+        >
+          Start&nbsp;Webcam
         </button>
       ) : (
-        <button onClick={handleStop} className="px-6 py-2 bg-red-600 text-white rounded">
-          Disable Webcam
+        <button
+          onClick={handleStop}
+          className="px-6 py-2 bg-red-600 text-white rounded"
+        >
+          Disable&nbsp;Webcam
         </button>
       )}
+
       <div ref={webcamContainerRef} />
-      <div ref={labelContainerRef} />
     </div>
   );
 };

@@ -47,7 +47,7 @@ const FindFlashcardsPage = () => {
                             This will allow you to use an open hand stop gesture to your webcam to stop the flashcards
                             when you see the English definition on the right that you think matches the Spanish word on the left.
                             This works best when you spread out your fingers and place your hand in the center of the webcam frame.
-                            Click <strong>Stop Webcam</strong> to turn off your webcam and disable gesture controls at which point,
+                            Click <strong>Stop Webcam</strong> to turn off your webcam and disable gesture controls. At that point,
                             you can only play using the stop button for the rest of the game. Refresh the page to restart the game 
                             to be able to turn back on the webcame or to switch to microphone controls.
                         </p>
@@ -60,7 +60,7 @@ const FindFlashcardsPage = () => {
                             Click <strong>Start Microphone</strong> to turn on your microphone and enable voice controls. 
                             This will allow you to use your voice to stop the flashcards when you to stop the flashcards 
                             by saying &quot;Stop&quot; when you see the English definition on the right that you think matches the Spanish word on the left.
-                            Click <strong>Stop Microphone</strong> to turn off your microphone and disable voice controls at which point,
+                            Click <strong>Stop Microphone</strong> to turn off your microphone and disable voice controls. At that point,
                             you can only play using the stop button for the rest of the game. Refresh the page to restart the game 
                             to be able to turn back on the microphone or to switch to webcam controls.
                         </p>

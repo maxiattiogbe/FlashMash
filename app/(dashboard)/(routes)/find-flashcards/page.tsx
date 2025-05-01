@@ -29,8 +29,10 @@ const FindFlashcardsPage = () => {
                 bgColor="bg-[#4169e1]/10"
             />
             <p className="text-md text-muted-foreground px-4 lg:px-8">
-                Currently limited to the one Spanish deck below. Click <strong>Directions</strong> to expand
-                the directions for the flashcards and click again to collapse them.
+                Currently limited to the one Spanish deck below. 
+                <br/>
+                Please click <strong>Directions</strong> to expand and <strong>read the directions</strong> for
+                the flashcards. Click <strong>Directions</strong> again to collapse the directions.
             </p>
             <Accordion type="single" collapsible>
                 <AccordionItem value="directions">
@@ -46,7 +48,7 @@ const FindFlashcardsPage = () => {
                             Click <strong>Start Webcam</strong> to turn on your webcam and enable gesture controls. 
                             This will allow you to use an open hand stop gesture to your webcam to stop the flashcards
                             when you see the English definition on the right that you think matches the Spanish word on the left.
-                            This works best when you spread out your fingers and place your hand in the center of the webcam frame.
+                            This works best when you <strong>spread out your fingers</strong> and <strong>place your hand in the center of the webcam frame</strong>.
                             Click <strong>Stop Webcam</strong> to turn off your webcam and disable gesture controls. At that point,
                             you can only play using the stop button for the rest of the game. Refresh the page to restart the game 
                             to be able to turn back on the webcame or to switch to microphone controls.

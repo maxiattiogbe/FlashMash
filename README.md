@@ -56,7 +56,7 @@ flashmash/
 ```bash
 git clone https://github.com/your-username/flashmash.git
 cd flashmash
-
+```
 
 ## Technology
 

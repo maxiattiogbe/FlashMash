@@ -28,3 +28,57 @@ FlashMash is a multimodal, interactive web app for learning vocabulary with Span
 
 ## File Structure
 
+flashmash/
+├── app/
+│   └── (dashboard)/find-flashcards/page.tsx      # Main flashcard page
+├── components/
+│   ├── card-pair.tsx                             # Flashcard gameplay logic
+│   ├── fixed-card.tsx                            # Static Spanish word card
+│   ├── flashing-card.tsx                         # Rotating English options
+│   ├── teachable-machine-webcam.tsx              # Open‑hand gesture detector
+│   ├── teachable-machine-audio.tsx               # Voice “stop” detector
+├── decks/
+│   └── flashmash_decks/spanish/
+│       ├── easy/
+│       ├── medium/
+│       └── hard/                                 # CSV decks
+├── lib/
+│   └── loadCsvDeck.ts                            # CSV loader utility
+├── public/
+│   ├── logo.png
+│   ├── open-hand
+
+
+## Setup Instructions
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/your-username/flashmash.git
+cd flashmash
+
+
+## Technology
+
+| Stack              | Purpose                                         |
+| ------------------ | ----------------------------------------------- |
+| **Next.js 15**     | React + App Router, TypeScript                  |
+| **Tailwind CSS**   | Utility‑first styling                           |
+| **TensorFlow.js**  | Loads Teachable Machine models in‑browser       |
+| **csv‑parse/sync** | Parses deck CSVs server‑side                    |
+
+
+## Usage
+
+
+## Multimodal Controls
+
+| Input Mode | How to Trigger   | Permission Needed |
+| ---------- | ---------------- | ----------------- |
+| **Button** | Click **Stop**   | None              |
+| **Gesture**| Show open hand   | Webcam            |
+| **Voice**  | Say “Stop”       | Microphone        |
+
+## License
+
+Released under the MIT License.

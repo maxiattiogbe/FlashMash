@@ -26,48 +26,75 @@ FlashMash is a multimodal, interactive web app for learning vocabulary with Span
 - CSV upload support for custom decks
 - Interactive directions panel for user onboarding
 
-## File Structure
+## File Structure 
+**Note:** There are some files that are not shown below but are in the repo for additional pages like generate flashcards and settings that exist for future work on this project.
 
-flashmash/
-├── app/
-│   └── (dashboard)/find-flashcards/page.tsx      # Main flashcard page
-├── components/
-│   ├── card-pair.tsx                             # Flashcard gameplay logic
-│   ├── fixed-card.tsx                            # Static Spanish word card
-│   ├── flashing-card.tsx                         # Rotating English options
-│   ├── teachable-machine-webcam.tsx              # Open‑hand gesture detector
-│   ├── teachable-machine-audio.tsx               # Voice “stop” detector
-├── decks/
-│   └── flashmash_decks/spanish/
-│       ├── easy/
-│       ├── medium/
-│       └── hard/                                 # CSV decks
-├── lib/
-│   └── loadCsvDeck.ts                            # CSV loader utility
-├── public/
-│   ├── logo.png
-│   ├── open-hand
-
-.
-├── ...
-├── docs                    # Documentation files (alternatively `doc`)
-│   ├── TOC.md              # Table of contents
-│   ├── faq.md              # Frequently asked questions
-│   ├── misc.md             # Miscellaneous information
-│   ├── usage.md            # Getting started guide
-│   └── ...                 # etc.
-└── ...
+    flashmash/
+    ├── app/                                   # Next.js 15 “app router” directory
+    │   ├── (dashboard)/
+    │   │   ├── (routes)/
+    │   │       ├── find-flashcards/
+    │   │           ├── page.tsx              # Flashcard game page
+    │   │           ├── loading.tsx           # Suspense fallback
+    │   ├── layout.tsx                        # Global <html> / ClerkProvider
+    │   └── globals.css                       # Tailwind base styles
+    │
+    ├── components/                           # Reusable UI + game logic
+    │   ├── card-pair.tsx                     # Orchestrates a Spanish word and English definition pair
+    │   ├── fixed-card.tsx                    # Static Spanish word card
+    │   ├── flashing-card.tsx                 # Rotating English definition options
+    │   ├── teachable-machine-webcam.tsx      # Open‑hand gesture detector
+    │   ├── teachable-machine-audio.tsx       # Voice “Stop” detector
+    │   ├── heading.tsx                       # Dashboard page headings
+    │   ├── ui/                               # shadcn/ui copies (Button, Sheet, etc)
+    │
+    ├── decks/                                # Flashcard CSV files
+    │   ├── flashmash_decks/
+    │       ├── spanish/
+    │           ├── easy/
+    │           │   ├── spanish_words_easy.csv
+    │           ├── medium/
+    │           │   ├──spanish_words_medium.csv
+    │           ├── hard/
+    │               ├── spanish_words_hard.csv
+    │
+    ├── lib/                                  # Server / helper utilities
+    │   ├──loadCsvDeck.ts                    # Synchronous CSV loader (csv‑parse/sync)
+    │
+    ├── public/                               # Static assets served at /
+    │   ├── logo.png
+    │   ├── open-hand-stop.jpg                # Gesture control directions image
+    │   ├── favicon.ico
+    │
+    ├── README.md                             # Main project read‑me
+    ├── next.config.mjs                       # Next.js config 
+    ├── tailwind.config.ts                    # Tailwind theme overrides
+    ├── tsconfig.json                         # TypeScript compiler options
+    ├── package.json                          # npm scripts + dependencies
+    ├── .eslintrc.json                        # ESLint rules 
+    └── ...
 
 ## Setup Instructions
 
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/flashmash.git
+git clone https://github.com/maxiattiogbe/flashmash.git
 cd flashmash
 ```
+2. **Install dependencies**
 
-## Technology
+```bash
+npm install
+```
+
+3. Run locally
+
+```bash
+npm run dev   # opens on http://localhost:3000
+```
+
+## Technologies
 
 | Stack              | Purpose                                         |
 | ------------------ | ----------------------------------------------- |
@@ -79,6 +106,14 @@ cd flashmash
 
 ## Usage
 
+1. Navigate to **Find Flashcards**.
+2. A Spanish word appears on the left; the English card on the right cycles through four options.
+3. Stop the flashing by:  
+   - Clicking the **Stop** button, **or**  
+   - Holding up an open hand to the **webcam**, **or**  
+   - Saying **“Stop”** into the **microphone**.
+4. Receive instant feedback and watch the flash speed adapt to your performance.
+5. Play through all cards, then view your full results summary.
 
 ## Multimodal Controls
 

@@ -78,8 +78,9 @@ const FindFlashcardsPage = () => {
                         </p>
                         <br />
                         <p className="text-lg text-muted-foreground">
-                            <strong>Note:</strong> The flashcards will speed up or slow down based on your performance,
-                            <strong>speeding up 1.5x every 3 cards answered correctly</strong> and <strong>slowing down 1.5x every 2 cards answered incorrectly.</strong>
+                            <strong>Note:</strong> The flashcards will speed up or slow down based on your
+                             performance, <strong>speeding up 1.5x every 3 cards answered correctly</strong> and <strong>slowing
+                             down 1.5x every 2 cards answered incorrectly.</strong>
                         </p>
                     </AccordionContent>
                 </AccordionItem>
